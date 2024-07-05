@@ -1,21 +1,38 @@
 import { Form, Input, Button, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import { ROUTES } from "../constants/routes.constants";
+import { ROUTES } from "../api/resources";
+import { AuthService } from "../service/auth.service";
+import { useState } from "react";
 
 const Login = () => {
   const [form] = Form.useForm();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
+  const onFinishedFailed = async () => {
+    message.error("Please fill in all fields");
+  };
+
   const handleLogin = async () => {
+    setIsLoading(true);
     try {
       const values = await form.validateFields();
-      if (values) {
-        navigate(ROUTES.dashboard);
+      const { email, password } = values;
+
+      await AuthService.authenticate(email, password);
+      navigate(ROUTES.dashboard);
+      form.resetFields();
+      //eslint-disable-next-line
+    } catch (error: any) {
+      if (error?.response?.data) {
+        message.error(error?.response?.data?.error);
+      } else {
+        message.error("Network Error");
       }
-    } catch (error) {
-      message.error("please fill in all fields");
     }
+    setIsLoading(false);
   };
+
   return (
     <main className="w-full h-screen  grid grid-cols-1 md:grid-cols-2">
       <div
@@ -28,7 +45,17 @@ const Login = () => {
         <img src="/images/white-logo.png" className="max-w-[200px] relative" />
       </div>
       <div className="w-full h-full flex items-center justify-center px-10 md:px-16">
-        <Form layout="vertical" form={form} className="p-5 w-full">
+        <Form
+          layout="vertical"
+          form={form}
+          className="p-5 w-full"
+          onFinishFailed={onFinishedFailed}
+          onKeyUp={(e) => {
+            if (e.key === "Enter") {
+              handleLogin();
+            }
+          }}
+        >
           <Link to="/" className="pt-7 flex justify-center">
             <img
               src="/images/green-logo.png"
@@ -76,6 +103,8 @@ const Login = () => {
               className="bg-primary"
               block
               size="large"
+              loading={isLoading}
+              disabled={isLoading}
               onClick={handleLogin}
             >
               Login

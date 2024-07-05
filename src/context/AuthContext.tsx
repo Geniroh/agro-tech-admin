@@ -21,12 +21,14 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // eslint-disable-next-line
+// eslint-disable-next-line
 export const useAuth = () => {
-  if (!AuthContext) {
-    throw Error("useAuth can only be used with an AuthContextProvider");
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth can only be used with an AuthContextProvider");
   }
 
-  return useContext(AuthContext);
+  return context;
 };
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -62,7 +64,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = useCallback(() => {
     setLoading(true);
-    setAuthorizationToken(null);
+    setAuthorizationToken("");
     setAuthenticated(false);
     revokeAUthorization();
     localStorage.removeItem(AUTH_TOKEN_KEY);

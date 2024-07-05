@@ -12,6 +12,6 @@ export class AuthService {
 
   static async getAuthenticatedUser() {
     const { data } = await api.get(ROUTES.authUser);
-    return data?.data;
+    return data?.user;
   }
 }

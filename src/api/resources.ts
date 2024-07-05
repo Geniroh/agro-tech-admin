@@ -1,5 +1,5 @@
 export const ROUTES = {
-  dashboard: "dashboard",
+  dashboard: "/dashboard",
   logoutUrl: "auth/logout",
   loginUrl: "auth/login",
   authUser: "auth/user",
