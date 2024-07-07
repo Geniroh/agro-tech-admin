@@ -9,7 +9,6 @@ function App() {
       theme={{
         token: {
           colorPrimary: "#329632",
-          fontFamily: '"Roboto Serif", "serif"',
         },
         components: {},
       }}

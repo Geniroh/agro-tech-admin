@@ -71,10 +71,31 @@ const columns: TableProps<IInnovationType>["columns"] = [
     ),
   },
   {
-    title: "Cost",
-    dataIndex: "cost",
+    title: "Status",
+    dataIndex: "status",
     key: "_id",
-    render: (value, record) => <span>{`(${record.currency})  ${value}`}</span>,
+    render: (status) => {
+      let color = "geekblue";
+      switch (status) {
+        case "approved":
+          color = "green";
+          break;
+        case "pending":
+          color = "processing";
+          break;
+        case "rejected":
+          color = "volcano";
+          break;
+        default:
+          color = "green-inverse";
+          break;
+      }
+      return (
+        <Tag color={color} key={status} className="text-[9px]">
+          {status.toUpperCase()}
+        </Tag>
+      );
+    },
   },
   {
     title: "Preview",
