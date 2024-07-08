@@ -6,6 +6,7 @@ import Innovations from "../components/Innovations";
 import InnovationPreview from "../components/InnovationPreview";
 import Default from "../components/Default";
 import FeaturedPosts from "../components/FeaturedPosts";
+import AddFeaturedPosts from "../components/AddFeaturedPosts";
 
 const AuthRoutes = () => {
   return (
@@ -19,6 +20,7 @@ const AuthRoutes = () => {
             element={<InnovationPreview />}
           />
           <Route path="posts" element={<FeaturedPosts />} />
+          <Route path="posts/add" element={<AddFeaturedPosts />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

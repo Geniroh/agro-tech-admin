@@ -17,9 +17,9 @@ import type { UploadProps } from "antd";
 import ReactPlayer from "react-player";
 import { useMutation } from "react-query";
 import { api } from "../api/api";
+import { FaPlus } from "react-icons/fa";
 
-const FeaturedPosts = () => {
-  const [showAddForm, setShowAddForm] = useState<boolean>(false);
+const AddFeaturedPosts = () => {
   //eslint-disable-next-line
   const [fileList, setFileList] = useState<any[]>([]);
   const [choice, setChoice] = useState<string>("image");
@@ -111,12 +111,7 @@ const FeaturedPosts = () => {
       <Card bordered={false} className="w-full">
         <div className="text-xl md:text-3xl font-bold">Featured Posts</div>
         <div className="mt-5 w-full flex justify-end">
-          <Button
-            type={!showAddForm ? "primary" : "default"}
-            onClick={() => setShowAddForm(!showAddForm)}
-          >
-            {!showAddForm ? "Add New" : "Cancel"}
-          </Button>
+          Add New <FaPlus />
         </div>
 
         <Form className="mt-5" form={form} onFinishFailed={onFinishFailed}>
@@ -240,4 +235,4 @@ const FeaturedPosts = () => {
   );
 };
 
-export default FeaturedPosts;
+export default AddFeaturedPosts;

@@ -11,6 +11,8 @@ import { IoIosLogOut } from "react-icons/io";
 import { IoCaretDownOutline } from "react-icons/io5";
 import { FaRegLightbulb } from "react-icons/fa";
 import { Link, Outlet } from "react-router-dom";
+import { FaPlus } from "react-icons/fa6";
+import { CiViewList } from "react-icons/ci";
 
 //eslint-disable-next-line
 const { Header, Content, Sider } = Layout;
@@ -27,6 +29,18 @@ const items: MenuItem[] = [
     key: "sub2",
     label: <Link to="posts">Featured Posts</Link>,
     icon: <FileOutlined />,
+    children: [
+      {
+        key: "chid1",
+        label: <Link to="posts/add">Add New</Link>,
+        icon: <FaPlus />,
+      },
+      {
+        key: "chid2",
+        label: <Link to="posts">View all</Link>,
+        icon: <CiViewList />,
+      },
+    ],
   },
   {
     type: "divider",
