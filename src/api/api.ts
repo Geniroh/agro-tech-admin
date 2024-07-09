@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ROUTES } from "./resources";
 
-const BASEURL = "http://localhost:8080";
+const BASEURL = "https://agro-tech-admin-api.onrender.com";
 
 export const api = axios.create({
   baseURL: BASEURL,

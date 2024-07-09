@@ -116,6 +116,15 @@ export interface IInnovationCommentReply {
   Comment: IInnovationComment;
 }
 
+export interface IFeaturedPosts {
+  _id: string;
+  mediaUrl: string;
+  title: string;
+  tag: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface IInnovationDiscussion {
   createdAt: string;
   dislikes: number;

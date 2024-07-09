@@ -7,6 +7,7 @@ import InnovationPreview from "../components/InnovationPreview";
 import Default from "../components/Default";
 import FeaturedPosts from "../components/FeaturedPosts";
 import AddFeaturedPosts from "../components/AddFeaturedPosts";
+import EditFeaturedPosts from "../components/EditFeaturedPosts";
 
 const AuthRoutes = () => {
   return (
@@ -21,6 +22,7 @@ const AuthRoutes = () => {
           />
           <Route path="posts" element={<FeaturedPosts />} />
           <Route path="posts/add" element={<AddFeaturedPosts />} />
+          <Route path="posts/:id" element={<EditFeaturedPosts />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

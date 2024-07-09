@@ -1,6 +1,6 @@
 export const AUTH_TOKEN_KEY = "sessionid";
 
-export const BACKEND_API = "http://localhost:8080";
+export const BACKEND_API = "https://agro-tech-admin-api.onrender.com";
 
 export const VALUE_CHAIN_OPTIONS = [
   { value: "Input Supply", label: "Input Supply" },

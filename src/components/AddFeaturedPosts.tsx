@@ -11,23 +11,22 @@ import {
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import { VALUE_CHAIN_OPTIONS } from "../constants";
+import { BACKEND_API, VALUE_CHAIN_OPTIONS } from "../constants";
 import ImgCrop from "antd-img-crop";
 import type { UploadProps } from "antd";
 import ReactPlayer from "react-player";
 import { useMutation } from "react-query";
 import { api } from "../api/api";
-import { FaPlus } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const AddFeaturedPosts = () => {
   //eslint-disable-next-line
   const [fileList, setFileList] = useState<any[]>([]);
   const [choice, setChoice] = useState<string>("image");
   const [mediaUrl, setMediaUrl] = useState<string>();
+  const navigate = useNavigate();
 
   const [form] = Form.useForm();
-
-  console.log();
 
   const addNewPost = async ({
     mediaUrl,
@@ -57,7 +56,7 @@ const AddFeaturedPosts = () => {
 
   const props: UploadProps = {
     name: "file",
-    action: `/upload`,
+    action: `${BACKEND_API}/upload`,
     showUploadList: { showRemoveIcon: false },
     listType: "picture-card",
     maxCount: 1,
@@ -78,8 +77,8 @@ const AddFeaturedPosts = () => {
 
   const handleChoice = (e: RadioChangeEvent) => {
     setChoice(e.target.value);
-    setMediaUrl(""); // Reset mediaUrl on choice change
-    form.resetFields(["mediaUrl"]); // Reset mediaUrl field in form
+    setMediaUrl("");
+    form.resetFields(["mediaUrl"]);
   };
 
   const onFinishFailed = () => {
@@ -97,10 +96,9 @@ const AddFeaturedPosts = () => {
         tag: values.tag,
         title: values.title,
       });
-      console.log(values);
 
       form.resetFields();
-      // Submit your form data here
+      setMediaUrl("");
     } catch (error) {
       message.error("Something went wrong!");
     }
@@ -109,10 +107,13 @@ const AddFeaturedPosts = () => {
   return (
     <div>
       <Card bordered={false} className="w-full">
-        <div className="text-xl md:text-3xl font-bold">Featured Posts</div>
-        <div className="mt-5 w-full flex justify-end">
-          Add New <FaPlus />
+        <div
+          className="w-full text-[16px] mb-3 cursor-pointer"
+          onClick={() => navigate(-1)}
+        >
+          Back
         </div>
+        <div className="text-xl md:text-3xl font-bold">Add New Post</div>
 
         <Form className="mt-5" form={form} onFinishFailed={onFinishFailed}>
           <Form.Item
