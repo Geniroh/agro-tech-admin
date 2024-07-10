@@ -8,6 +8,7 @@ import Default from "../components/Default";
 import FeaturedPosts from "../components/FeaturedPosts";
 import AddFeaturedPosts from "../components/AddFeaturedPosts";
 import EditFeaturedPosts from "../components/EditFeaturedPosts";
+import InviteAdmin from "../components/InviteAdmin";
 
 const AuthRoutes = () => {
   return (
@@ -23,6 +24,7 @@ const AuthRoutes = () => {
           <Route path="posts" element={<FeaturedPosts />} />
           <Route path="posts/add" element={<AddFeaturedPosts />} />
           <Route path="posts/:id" element={<EditFeaturedPosts />} />
+          <Route path="invite" element={<InviteAdmin />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

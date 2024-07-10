@@ -13,6 +13,7 @@ import { FaRegLightbulb } from "react-icons/fa";
 import { Link, Outlet } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
 import { CiViewList } from "react-icons/ci";
+import { MdMarkEmailRead } from "react-icons/md";
 
 //eslint-disable-next-line
 const { Header, Content, Sider } = Layout;
@@ -44,6 +45,11 @@ const items: MenuItem[] = [
   },
   {
     type: "divider",
+  },
+  {
+    key: "sub3",
+    label: <Link to="invite">Invite An Admin</Link>,
+    icon: <MdMarkEmailRead />,
   },
 ];
 
