@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 const Default = () => {
   const navigate = useNavigate();
+
   return (
     <div>
       <div className="w-full grid grid-cols-1 md:grid-cols-2 ">
@@ -12,7 +13,7 @@ const Default = () => {
           <h1 className="text-2xl md:text-4xl font-bold mb-6">
             Total Innovations
           </h1>
-          <div className="text-2xl font-extrabold">10</div>
+          <div className="text-2xl font-extrabold">...</div>
         </div>
       </div>
     </div>
