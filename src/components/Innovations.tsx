@@ -125,10 +125,6 @@ const Innovations = () => {
     return data;
   };
 
-  const onChange = (key: string) => {
-    console.log(key);
-  };
-
   const { isLoading } = useQuery(
     ["get-all-innovation"],
     () => getInnovations(),
@@ -206,7 +202,7 @@ const Innovations = () => {
     <div>
       <Card bordered={false} className="w-full">
         <div className="text-xl md:text-3xl font-bold">Innovations</div>
-        <Tabs defaultActiveKey="1" items={tabs} onChange={onChange} />
+        <Tabs defaultActiveKey="1" items={tabs} />
       </Card>
     </div>
   );

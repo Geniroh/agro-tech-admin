@@ -1,21 +1,59 @@
 import { useNavigate } from "react-router-dom";
+import { Col, message, Row, Statistic } from "antd";
+import { useQuery } from "react-query";
+import { IInnovationType } from "../types";
+import { api } from "../api/api";
+import { useState } from "react";
 
 const Default = () => {
+  const [allInnovations, setAllInnovations] = useState<IInnovationType[]>([]);
+  const [pendingInnovations, setPendingInnovations] = useState<
+    IInnovationType[]
+  >([]);
+
   const navigate = useNavigate();
+  const getInnovations = async () => {
+    const { data } = await api.get<IInnovationType[]>("/innovation");
+    return data;
+  };
+
+  const { isLoading } = useQuery(
+    ["get-all-innovation"],
+    () => getInnovations(),
+    {
+      keepPreviousData: true,
+      onError: () => {
+        message.error("Could not get innovations at this moment");
+      },
+      onSuccess: (data) => {
+        const pending = data.filter(
+          (innovation) => innovation.status === "pending"
+        );
+
+        setAllInnovations(data);
+        setPendingInnovations(pending);
+      },
+    }
+  );
 
   return (
     <div>
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 ">
-        <div
-          className="w-full border border-slate-100 h-[150px] rounded-2xl p-8 cursor-pointer shadow-xl"
-          onClick={() => navigate("innovations")}
-        >
-          <h1 className="text-2xl md:text-4xl font-bold mb-6">
-            Total Innovations
-          </h1>
-          <div className="text-2xl font-extrabold">...</div>
-        </div>
-      </div>
+      <Row gutter={16} className="max-w-[400px]">
+        <Col span={12} onClick={() => navigate("innovations")}>
+          <Statistic
+            loading={isLoading}
+            title="Total Innovation"
+            value={allInnovations.length}
+          />
+        </Col>
+        <Col span={12}>
+          <Statistic
+            loading={isLoading}
+            title="Innovation pending approval"
+            value={pendingInnovations.length}
+          />
+        </Col>
+      </Row>
     </div>
   );
 };
