@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Col, message, Row, Statistic } from "antd";
+import { message, Statistic } from "antd";
 import { useQuery } from "react-query";
 import { IFeaturedPosts, IInnovationType } from "../types";
 import { api } from "../api/api";
@@ -56,29 +56,32 @@ const Default = () => {
 
   return (
     <div>
-      <Row gutter={16} className="max-w-[400px]">
-        <Col span={12} onClick={() => navigate("innovations")}>
+      <div className="w-full flex items-center gap-6 flex-wrap">
+        <div
+          onClick={() => navigate("innovations")}
+          className="rounded-md shadow-md p-4"
+        >
           <Statistic
             loading={isLoading}
             title="Total Innovation"
             value={allInnovations.length}
           />
-        </Col>
-        <Col span={12}>
+        </div>
+        <div className="rounded-md shadow-md p-4">
           <Statistic
             loading={isLoading}
             title="Innovation pending approval"
             value={pendingInnovations.length}
           />
-        </Col>
-        <Col span={12}>
+        </div>
+        <div className="rounded-md shadow-md p-4">
           <Statistic
             loading={isFeaturedLoading}
             title="Featured Posts"
             value={featuredPosts.length}
           />
-        </Col>
-      </Row>
+        </div>
+      </div>
     </div>
   );
 };

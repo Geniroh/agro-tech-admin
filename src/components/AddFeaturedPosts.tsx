@@ -119,9 +119,10 @@ const AddFeaturedPosts = () => {
       const values = await form.validateFields();
       values.mediaUrl = mediaUrl || values.mediaUrl;
       values.thumbnailUrl = thumbnailUrl || values.thumbnailUrl;
+      console.log({ values });
       if (values.mediaType !== "image") {
         values.mediaType = "video";
-
+        console.log("HERE");
         if (!values.thumbnailUrl) {
           message.error("Please upload a thumbnail for your video");
           return;

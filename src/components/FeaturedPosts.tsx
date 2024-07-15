@@ -15,6 +15,7 @@ const FeaturedPosts = () => {
   const { isLoading } = useQuery("get-all-featured-posts", getFeaturedPosts, {
     onSuccess: (data) => {
       setFeaturedPosts(data);
+      console.log(data);
     },
     onError: () => {
       message.error("Network error!");
