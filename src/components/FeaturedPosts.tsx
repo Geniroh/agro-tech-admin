@@ -9,7 +9,6 @@ const FeaturedPosts = () => {
   const [featuredPosts, setFeaturedPosts] = useState<IFeaturedPosts[]>([]);
   const getFeaturedPosts = async () => {
     const { data } = await api.get<IFeaturedPosts[]>("/featured");
-    console.log(data);
     return data;
   };
 
@@ -45,7 +44,7 @@ const FeaturedPosts = () => {
         <div className="text-xl md:text-3xl font-bold">Featured Posts</div>
 
         <Space className="w-full mt-5">
-          <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-4">
             {featuredPosts.map((posts) => (
               <FeaturedCard
                 id={posts._id}

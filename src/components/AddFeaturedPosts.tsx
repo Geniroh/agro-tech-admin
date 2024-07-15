@@ -20,27 +20,34 @@ import { api } from "../api/api";
 import { useNavigate } from "react-router-dom";
 
 const AddFeaturedPosts = () => {
-  //eslint-disable-next-line
   const [fileList, setFileList] = useState<any[]>([]);
+  const [thumbnailFileList, setThumbnailFileList] = useState<any[]>([]);
   const [choice, setChoice] = useState<string>("image");
   const [mediaUrl, setMediaUrl] = useState<string>();
+  const [thumbnailUrl, setThumbnailUrl] = useState<string>();
   const navigate = useNavigate();
 
   const [form] = Form.useForm();
 
   const addNewPost = async ({
     mediaUrl,
+    thumbnailImage,
     title,
     tag,
+    type,
   }: {
     mediaUrl: string;
+    thumbnailImage: string;
     title: string;
     tag: string[];
+    type: string;
   }) => {
     const { data } = await api.post(`/featured`, {
       mediaUrl,
+      thumbnailImage,
       title,
       tag,
+      type,
     });
     return data;
   };
@@ -75,9 +82,31 @@ const AddFeaturedPosts = () => {
     },
   };
 
+  const thumbnailProps: UploadProps = {
+    name: "file",
+    action: `${BACKEND_API}/upload`,
+    showUploadList: { showRemoveIcon: false },
+    listType: "picture-card",
+    maxCount: 1,
+    onChange(info) {
+      if (info.file.status === "done") {
+        if (info.file.response && info.file.response.file.url) {
+          const thumbnailUrl = info.file.response.file.url;
+          setThumbnailUrl(thumbnailUrl);
+          setThumbnailFileList([info.file]);
+        } else {
+          message.error("Failed to upload thumbnail");
+        }
+      } else if (info.file.status === "error") {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
+
   const handleChoice = (e: RadioChangeEvent) => {
     setChoice(e.target.value);
     setMediaUrl("");
+    setThumbnailUrl("");
     form.resetFields(["mediaUrl"]);
   };
 
@@ -88,19 +117,35 @@ const AddFeaturedPosts = () => {
   const handleSubmit = async () => {
     try {
       const values = await form.validateFields();
-      // Add the mediaUrl to the form values before submission
       values.mediaUrl = mediaUrl || values.mediaUrl;
+      values.thumbnailUrl = thumbnailUrl || values.thumbnailUrl;
+      if (values.mediaType !== "image") {
+        values.mediaType = "video";
+
+        if (!values.thumbnailUrl) {
+          message.error("Please upload a thumbnail for your video");
+          return;
+        }
+      }
 
       await mutateAsync({
         mediaUrl: values.mediaUrl,
+        thumbnailImage: values.thumbnailUrl,
         tag: values.tag,
         title: values.title,
+        type: values.mediaType,
       });
 
       form.resetFields();
       setMediaUrl("");
-    } catch (error) {
-      message.error("Something went wrong!");
+      setThumbnailUrl("");
+    } catch (error: any) {
+      console.log(error);
+      if (error?.errorFields[0]?.errors[0]) {
+        message.error(error?.errorFields[0]?.errors[0]);
+      } else {
+        message.error("Something went wrong!");
+      }
     }
   };
 
@@ -142,7 +187,7 @@ const AddFeaturedPosts = () => {
             />
           </Form.Item>
 
-          <Form.Item label="Media Type">
+          <Form.Item label="Media Type" name="mediaType">
             <Radio.Group onChange={handleChoice} defaultValue={"image"}>
               <Radio value="image"> Image upload </Radio>
               <Radio value="video"> Video Upload </Radio>
@@ -194,6 +239,30 @@ const AddFeaturedPosts = () => {
               rules={[{ required: true, message: "Please enter a video link" }]}
             >
               <Input onChange={(e) => setMediaUrl(e.target.value)} />
+            </Form.Item>
+          )}
+
+          {choice != "image" && (
+            <Form.Item
+              label="Thumbnail"
+              // name="thumbnailImage"
+              valuePropName="fileList"
+              getValueFromEvent={() => thumbnailFileList}
+              rules={[
+                { required: true, message: "Please upload a thumbnail image" },
+              ]}
+            >
+              <ImgCrop aspect={2 / 3}>
+                <Upload {...thumbnailProps}>
+                  <button
+                    style={{ border: 0, background: "none" }}
+                    type="button"
+                  >
+                    <PlusOutlined />
+                    <div style={{ marginTop: 8 }}>Upload Thumbnail</div>
+                  </button>
+                </Upload>
+              </ImgCrop>
             </Form.Item>
           )}
 

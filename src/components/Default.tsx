@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Col, message, Row, Statistic } from "antd";
 import { useQuery } from "react-query";
-import { IInnovationType } from "../types";
+import { IFeaturedPosts, IInnovationType } from "../types";
 import { api } from "../api/api";
 import { useState } from "react";
 
@@ -10,6 +10,7 @@ const Default = () => {
   const [pendingInnovations, setPendingInnovations] = useState<
     IInnovationType[]
   >([]);
+  const [featuredPosts, setFeaturedPosts] = useState<IFeaturedPosts[]>([]);
 
   const navigate = useNavigate();
   const getInnovations = async () => {
@@ -35,6 +36,23 @@ const Default = () => {
       },
     }
   );
+  const getFeaturedPosts = async () => {
+    const { data } = await api.get<IFeaturedPosts[]>("/featured");
+    return data;
+  };
+
+  const { isLoading: isFeaturedLoading } = useQuery(
+    "get-all-featured-posts-home",
+    getFeaturedPosts,
+    {
+      onSuccess: (data) => {
+        setFeaturedPosts(data);
+      },
+      onError: () => {
+        message.error("Network error!");
+      },
+    }
+  );
 
   return (
     <div>
@@ -51,6 +69,13 @@ const Default = () => {
             loading={isLoading}
             title="Innovation pending approval"
             value={pendingInnovations.length}
+          />
+        </Col>
+        <Col span={12}>
+          <Statistic
+            loading={isFeaturedLoading}
+            title="Featured Posts"
+            value={featuredPosts.length}
           />
         </Col>
       </Row>
