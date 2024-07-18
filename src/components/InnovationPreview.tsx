@@ -1,9 +1,13 @@
+//eslint-disable-next-line
 import { Button, Card, Collapse, Image, Tag } from "antd";
 import { useParams, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { api } from "../api/api";
 import { useState } from "react";
 import { IInnovationType } from "../types";
+import { FaCheckCircle } from "react-icons/fa";
+import { FcCancel } from "react-icons/fc";
+import { RenderMedia } from "./RenderMedia";
 
 const InnovationPreview = () => {
   const { id } = useParams<{ id: string }>();
@@ -13,6 +17,7 @@ const InnovationPreview = () => {
 
   const getInnovationById = async (id: string) => {
     const { data: res } = await api.get<IInnovationType>(`/innovation/${id}`);
+    console.log(res);
     return res;
   };
 
@@ -166,11 +171,16 @@ const InnovationPreview = () => {
                   data.productMedia.map(
                     (media, i) =>
                       media.url && (
-                        <Image
-                          src={media.url}
+                        <RenderMedia
+                          media={media}
                           key={i}
                           className="rounded-md h-[95px] w-[68px] md:h-[120px] md:w-full lg:h-[200px]"
                         />
+                        // <Image
+                        //   src={media.url}
+                        //   key={i}
+                        //   className="rounded-md h-[95px] w-[68px] md:h-[120px] md:w-full lg:h-[200px]"
+                        // />
                       )
                   )
                 ) : (
@@ -255,6 +265,127 @@ const InnovationPreview = () => {
                                 </div>
                               ))}
                             </>
+                          ) : (
+                            <div className="text-center text-muted-foreground flex justify-center items-center">
+                              --- No data ----
+                            </div>
+                          )}
+                        </>
+                      ),
+                    },
+                    {
+                      key: "3",
+                      label: "Contact Inventor",
+                      children: (
+                        <>
+                          {data?.isInventor ? (
+                            <>
+                              {data.productInventor.map((inventor, i) => (
+                                <div
+                                  key={i}
+                                  className="text-[14px] leading-[22px] mb-3"
+                                >
+                                  <h2 className="text-[#888888] text-[16px] mb-2">
+                                    Contact {i + 1}
+                                  </h2>
+                                  <ul className="flex flex-col gap-2">
+                                    <li>
+                                      <span className="text-[#888888]">
+                                        Name
+                                      </span>{" "}
+                                      {inventor.inventor_name}
+                                    </li>
+                                    <li>
+                                      <span className="text-[#888888]">
+                                        Email
+                                      </span>{" "}
+                                      {inventor.inventor_email}
+                                    </li>
+                                    <li>
+                                      <span className="text-[#888888]">
+                                        Phone
+                                      </span>{" "}
+                                      {inventor.inventor_contact}
+                                    </li>
+                                  </ul>
+                                </div>
+                              ))}
+                            </>
+                          ) : (
+                            <div className="text-center text-muted-foreground flex justify-center items-center">
+                              --- No data ----
+                            </div>
+                          )}
+                        </>
+                      ),
+                    },
+                    {
+                      key: "4",
+                      label: "Usage Examples",
+                      children: (
+                        <>
+                          {data?.isExample ? (
+                            <>
+                              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                {data?.productExample?.map((example, i) => (
+                                  <div key={i} className="text-center">
+                                    <RenderMedia
+                                      media={example.instance_media[0]}
+                                      key={i}
+                                      className="w-full max-w-[250px] mx-auto h-[220px] md:h-[250px] lg:h-[250px] object-cover"
+                                    />
+                                    {example.instance_description}
+                                  </div>
+                                ))}
+                              </div>
+                            </>
+                          ) : (
+                            <div className="text-center text-muted-foreground flex justify-center items-center">
+                              --- No data ----
+                            </div>
+                          )}
+                        </>
+                      ),
+                    },
+                    {
+                      key: "5",
+                      label: "HSE Guideline",
+                      children: (
+                        <>
+                          {data?.isHSEGuidelines ? (
+                            <>
+                              <ul>
+                                {data?.productGuidelines?.map(
+                                  (guideline, i) => (
+                                    <li key={i}>{guideline.name}</li>
+                                  )
+                                )}
+                              </ul>
+                            </>
+                          ) : (
+                            <div className="text-center text-muted-foreground flex justify-center items-center">
+                              --- No data ----
+                            </div>
+                          )}
+                        </>
+                      ),
+                    },
+                    {
+                      key: "6",
+                      label: (
+                        <div className="flex gap-2 items-center">
+                          <span>Gender Friendly</span>
+                          {data?.isGenderFriendly ? (
+                            <FaCheckCircle className="text-primary" />
+                          ) : (
+                            <FcCancel />
+                          )}
+                        </div>
+                      ),
+                      children: (
+                        <>
+                          {data?.isGenderFriendly ? (
+                            <p>{data?.productGenderDescription}</p>
                           ) : (
                             <div className="text-center text-muted-foreground flex justify-center items-center">
                               --- No data ----

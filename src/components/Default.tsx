@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { message, Statistic } from "antd";
 import { useQuery } from "react-query";
-import { IFeaturedPosts, IInnovationType } from "../types";
+import { IEditRequest, IFeaturedPosts, IInnovationType } from "../types";
 import { api } from "../api/api";
 import { useState } from "react";
 
@@ -17,6 +17,26 @@ const Default = () => {
     const { data } = await api.get<IInnovationType[]>("/innovation");
     return data;
   };
+
+  const [request, setRequest] = useState<IEditRequest[]>([]);
+
+  const getAllRequest = async () => {
+    const { data } = await api.get<IEditRequest[]>("/edit-request");
+    return data;
+  };
+
+  const { isLoading: isRequesting } = useQuery(
+    "get-all-edit-request",
+    () => getAllRequest(),
+    {
+      onSuccess: (data) => {
+        setRequest(data);
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    }
+  );
 
   const { isLoading } = useQuery(
     ["get-all-innovation"],
@@ -79,6 +99,13 @@ const Default = () => {
             loading={isFeaturedLoading}
             title="Featured Posts"
             value={featuredPosts.length}
+          />
+        </div>
+        <div className="rounded-md shadow-md p-4">
+          <Statistic
+            loading={isRequesting}
+            title="Edit Requests"
+            value={request.length}
           />
         </div>
       </div>

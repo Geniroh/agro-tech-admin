@@ -9,6 +9,7 @@ import FeaturedPosts from "../components/FeaturedPosts";
 import AddFeaturedPosts from "../components/AddFeaturedPosts";
 import EditFeaturedPosts from "../components/EditFeaturedPosts";
 import InviteAdmin from "../components/InviteAdmin";
+import EditInnovation from "../components/EditInnovation";
 
 const AuthRoutes = () => {
   return (
@@ -25,6 +26,7 @@ const AuthRoutes = () => {
           <Route path="posts/add" element={<AddFeaturedPosts />} />
           <Route path="posts/:id" element={<EditFeaturedPosts />} />
           <Route path="invite" element={<InviteAdmin />} />
+          <Route path="edit-access" element={<EditInnovation />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

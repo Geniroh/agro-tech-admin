@@ -207,3 +207,13 @@ interface IUserDiscussionReply {
   discussionId: string;
   Discussion?: IUserDiscussion;
 }
+
+export interface IEditRequest {
+  email: string;
+  innovationId: string;
+  expires?: string;
+  status: string;
+  title: string;
+  token: string;
+  _id: string;
+}

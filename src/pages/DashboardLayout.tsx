@@ -13,7 +13,8 @@ import { FaRegLightbulb } from "react-icons/fa";
 import { Link, Outlet } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
 import { CiViewList } from "react-icons/ci";
-import { MdMarkEmailRead } from "react-icons/md";
+import { LuFileEdit } from "react-icons/lu";
+import { MdMarkEmailRead, MdDashboard } from "react-icons/md";
 
 //eslint-disable-next-line
 const { Header, Content, Sider } = Layout;
@@ -21,6 +22,11 @@ const { Header, Content, Sider } = Layout;
 type MenuItem = Required<MenuProps>["items"][number];
 
 const items: MenuItem[] = [
+  {
+    key: "sub0",
+    label: <Link to="/dashboard">Dashboard</Link>,
+    icon: <MdDashboard />,
+  },
   {
     key: "sub1",
     label: <Link to="innovations">Innovations</Link>,
@@ -50,6 +56,11 @@ const items: MenuItem[] = [
     key: "sub3",
     label: <Link to="invite">Invite An Admin</Link>,
     icon: <MdMarkEmailRead />,
+  },
+  {
+    key: "sub4",
+    label: <Link to="edit-access">Edit Request</Link>,
+    icon: <LuFileEdit />,
   },
 ];
 
