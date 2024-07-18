@@ -1,5 +1,5 @@
 //eslint-disable-next-line
-import { Button, Card, Collapse, Image, Tag } from "antd";
+import { Button, Card, Collapse, Tag } from "antd";
 import { useParams, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { api } from "../api/api";
